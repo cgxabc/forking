@@ -1,0 +1,300 @@
+cd "C:\Users\g961c318\Desktop"
+gen WSAschool=0
+replace WSAschool=1 if schANid==108 | schANid==109 | schANid==110 |schANid==102|schANid==103|schANid==106
+
+gen nonWSAschool=0
+replace nonWSAschool=1 if schANid==101 |schANid==104|schANid==105|schANid==107|schANid==111|schANid==112
+
+gen WSASchoolfirst=0
+replace WSASchoolfirst=1 if schANid==108 | schANid==109 | schANid==110
+
+gen APcourse=S006_D if S006_D !=-999
+gen applycounselor=S006_FG if S006_FG!=-999
+
+**descriptive statistics for WSA schools
+#delimit;
+sum WSAreceive WSAapply male selfGPA edaspire collegenext ownhome daded momed white black
+ hispanic nativeamerican asianpacific otherrace multirac collegeattendfull APcourse applycounselor
+if WSAschool==1 & WSAreceive!=.;
+
+#delimit cr
+
+
+**find percent of full college enrollment for all schools***
+sum collegeattendfull if year==2000 & schANid==108
+sum collegeattendfull if year==2002 & schANid==108
+sum collegeattendfull if year==2003 & schANid==108
+sum collegeattendfull if year==2004 & schANid==108
+sum collegeattendfull if year==2005 & schANid==108
+
+sum collegeattendfull if year==2000 & schANid==109
+sum collegeattendfull if year==2002 & schANid==109
+sum collegeattendfull if year==2003 & schANid==109
+sum collegeattendfull if year==2004 & schANid==109
+sum collegeattendfull if year==2005 & schANid==109
+
+sum collegeattendfull if year==2000 & schANid==110
+sum collegeattendfull if year==2002 & schANid==110
+sum collegeattendfull if year==2003 & schANid==110
+sum collegeattendfull if year==2004 & schANid==110
+sum collegeattendfull if year==2005 & schANid==110
+
+sum collegeattendfull if year==2000 & schANid==102
+sum collegeattendfull if year==2002 & schANid==102
+sum collegeattendfull if year==2003 & schANid==102
+sum collegeattendfull if year==2004 & schANid==102
+sum collegeattendfull if year==2005 & schANid==102
+
+sum collegeattendfull if year==2000 & schANid==103
+sum collegeattendfull if year==2002 & schANid==103
+sum collegeattendfull if year==2003 & schANid==103
+sum collegeattendfull if year==2004 & schANid==103
+sum collegeattendfull if year==2005 & schANid==103
+
+sum collegeattendfull if year==2000 & schANid==106
+sum collegeattendfull if year==2002 & schANid==106
+sum collegeattendfull if year==2003 & schANid==106
+sum collegeattendfull if year==2004 & schANid==106
+sum collegeattendfull if year==2005 & schANid==106
+
+sum collegeattendfull if year==2000 & schANid==101
+sum collegeattendfull if year==2002 & schANid==101
+sum collegeattendfull if year==2003 & schANid==101
+sum collegeattendfull if year==2004 & schANid==101
+sum collegeattendfull if year==2005 & schANid==101
+
+sum collegeattendfull if year==2000 & schANid==104
+sum collegeattendfull if year==2002 & schANid==104
+sum collegeattendfull if year==2003 & schANid==104
+sum collegeattendfull if year==2004 & schANid==104
+sum collegeattendfull if year==2005 & schANid==104
+
+sum collegeattendfull if year==2000 & schANid==105
+sum collegeattendfull if year==2002 & schANid==105
+sum collegeattendfull if year==2003 & schANid==105
+sum collegeattendfull if year==2004 & schANid==105
+sum collegeattendfull if year==2005 & schANid==105
+
+sum collegeattendfull if year==2000 & schANid==107
+sum collegeattendfull if year==2002 & schANid==107
+sum collegeattendfull if year==2003 & schANid==107
+sum collegeattendfull if year==2004 & schANid==107
+sum collegeattendfull if year==2005 & schANid==107
+
+sum collegeattendfull if year==2000 & schANid==111
+sum collegeattendfull if year==2002 & schANid==111
+sum collegeattendfull if year==2003 & schANid==111
+sum collegeattendfull if year==2004 & schANid==111
+sum collegeattendfull if year==2005 & schANid==111
+
+sum collegeattendfull if year==2000 & schANid==112
+sum collegeattendfull if year==2002 & schANid==112
+sum collegeattendfull if year==2003 & schANid==112
+sum collegeattendfull if year==2004 & schANid==112
+sum collegeattendfull if year==2005 & schANid==112
+
+
+
+**a remarkable command***
+ssc install psmatch2,replace
+
+**difference between WSA schools and non WSA schools***
+
+#delimit;
+psmatch2 WSAschool male selfGPA edaspire collegenext ownhome daded momed white black
+ hispanic nativeamerican asianpacific otherrace multirac APcourse applycounselor 
+ if year !=2000 | year!=2002, outcome (collegeattendfull) logit ;
+#delimit cr
+
+
+**school 108***
+#delimit;
+psmatch2 WSAreceive male selfGPA edaspire collegenext ownhome daded momed white black
+ hispanic nativeamerican asianpacific otherrace multirac APcourse applycounselor
+if schANid==108 &year!=2000, outcome (collegeattendfull) logit ;
+
+teffects psmatch (collegeattendfull) (WSAreceive male selfGPA edaspire collegenext ownhome daded momed white 
+black hispanic nativeamerican asianpacific otherrace multirac APcourse applycounselor)if schANid==108 &year!=2000,
+atet;
+
+#delimit cr
+
+**school 109***
+#delimit;
+psmatch2 WSAreceive male selfGPA edaspire collegenext ownhome daded momed white black
+ hispanic nativeamerican asianpacific otherrace multirac  APcourse applycounselor
+if schANid==109 &year!=2000, outcome (collegeattendfull) logit ;
+
+#delimit cr
+
+***school 110****
+#delimit;
+psmatch2 WSAreceive male selfGPA edaspire collegenext ownhome daded momed white black
+ hispanic nativeamerican asianpacific otherrace multirac  APcourse applycounselor
+if schANid==110 &year!=2000, outcome (collegeattendfull) logit ;
+
+
+#delimit cr
+
+***school 102****
+#delimit;
+psmatch2 WSAreceive male selfGPA edaspire collegenext ownhome daded momed white black
+ hispanic nativeamerican asianpacific otherrace multirac APcourse applycounselor
+if schANid==102 &year!=2000 &year!=2002, outcome (collegeattendfull) logit ;
+
+
+#delimit cr
+
+***school 103 (problematic?)****
+*#delimit;
+*psmatch2 WSAreceive male selfGPA edaspire collegenext ownhome daded momed white black
+ *hispanic nativeamerican asianpacific otherrace multirac APcourse applycounselor
+*if schANid==103 &year!=2000 &year!=2002, outcome (collegeattendfull) logit ;
+
+*teffects psmatch (collegeattendfull) (WSAreceive male selfGPA edaspire collegenext ownhome daded momed white 
+*black hispanic nativeamerican asianpacific otherrace multirac APcourse applycounselor)
+*if schANid==103 &year!=2000&year!=2002,
+*atet;
+
+*teffects psmatch (collegeattendfull) (WSAreceive male selfGPA edaspire collegenext ownhome daded momed white 
+*black hispanic nativeamerican asianpacific otherrace multirac APcourse applycounselor)
+*if schANid==103 &year!=2000&year!=2002;
+
+*#delimit cr
+
+***drop school 103***
+
+***school 106*****
+#delimit;
+psmatch2 WSAreceive male selfGPA edaspire collegenext ownhome daded momed white black
+ hispanic nativeamerican asianpacific otherrace multirac APcourse applycounselor
+if schANid==106 &year!=2000&year!=2002, outcome (collegeattendfull) logit ;
+
+
+#delimit cr
+
+
+**among applied school 108***
+#delimit;
+psmatch2 WSAreceive male selfGPA edaspire collegenext ownhome daded momed white black
+ hispanic nativeamerican asianpacific otherrace multirac APcourse applycounselor
+if schANid==108 &year!=2000& WSAapply==1, outcome (collegeattendfull) logit ;
+
+#delimit cr
+
+**among applied school 109***
+#delimit;
+psmatch2 WSAreceive male selfGPA edaspire collegenext ownhome daded momed white black
+ hispanic nativeamerican asianpacific otherrace multirac  APcourse applycounselor
+if schANid==109 &year!=2000& WSAapply==1, outcome (collegeattendfull) logit ;
+
+#delimit cr
+
+***among applied school 110****
+#delimit;
+psmatch2 WSAreceive male selfGPA edaspire collegenext ownhome daded momed white black
+ hispanic nativeamerican asianpacific otherrace multirac  APcourse applycounselor
+if schANid==110 &year!=2000& WSAapply==1, outcome (collegeattendfull) logit ;
+#delimit cr
+
+***among applied school 102****
+#delimit;
+psmatch2 WSAreceive male selfGPA edaspire collegenext ownhome daded momed white black
+ hispanic nativeamerican asianpacific otherrace multirac APcourse applycounselor
+if schANid==102 &year!=2000 &year!=2002&WSAapply==1, outcome (collegeattendfull) logit ;
+#delimit cr
+
+***among applied school 106*****
+#delimit;
+psmatch2 WSAreceive male selfGPA edaspire collegenext ownhome daded momed white black
+ hispanic nativeamerican asianpacific otherrace multirac APcourse applycounselor
+if schANid==106 &year!=2000&year!=2002&WSAapply==1, outcome (collegeattendfull) logit ;
+#delimit cr
+
+
+*In year 2005*
+#delimit;
+psmatch2 WSAreceive male selfGPA edaspire collegenext ownhome daded momed white black
+ hispanic nativeamerican asianpacific otherrace multirac APcourse applycounselor
+if WSAschool==1& year==2005, outcome (collegeattendfull) logit ;
+#delimit cr
+
+*In year 2004*
+#delimit;
+psmatch2 WSAreceive male selfGPA edaspire collegenext ownhome daded momed white black
+ hispanic nativeamerican asianpacific otherrace multirac APcourse applycounselor
+if WSAschool==1& year==2004, outcome (collegeattendfull) logit ;
+#delimit cr
+
+
+*In year 2003*
+#delimit;
+psmatch2 WSAreceive male selfGPA edaspire collegenext ownhome daded momed white black
+ hispanic nativeamerican asianpacific otherrace multirac APcourse applycounselor
+if WSAschool==1& year==2003, outcome (collegeattendfull) logit ;
+#delimit cr
+
+*In year 2002*
+*#delimit;
+*psmatch2 WSAreceive male selfGPA edaspire collegenext ownhome daded momed white black
+ *hispanic nativeamerican asianpacific otherrace multirac APcourse applycounselor
+*if WSAschoolfirst==1& year==2002, outcome (collegeattendfull) logit ;
+*#delimit cr
+
+**focus on school 109**
+
+**covariates of propensity score**
+#delimit;
+logit WSAreceive male selfGPA edaspire collegenext ownhome daded momed white black
+ hispanic nativeamerican asianpacific otherrace multirac APcourse applycounselor 
+ if schANid==109 & year !=2000;
+#delimit cr
+
+
+**school 109***
+
+**nearest neighbor**
+#delimit;
+psmatch2 WSAreceive male selfGPA edaspire collegenext ownhome daded momed white black
+ hispanic nativeamerican asianpacific otherrace multirac  APcourse applycounselor
+if schANid==109 &year!=2000, outcome (collegeattendfull) logit ;
+
+pstest male selfGPA edaspire collegenext ownhome daded momed white black
+ hispanic nativeamerican asianpacific otherrace multirac  APcourse applycounselor
+if schANid==109 &year!=2000;
+#delimit cr
+psgraph
+
+
+#delimit;
+psmatch2 WSAreceive male selfGPA edaspire collegenext ownhome daded momed white black
+ hispanic nativeamerican asianpacific otherrace multirac  APcourse applycounselor
+if schANid==109 &year!=2000, outcome (collegeattendfull) noreplacement logit  ;
+
+pstest male selfGPA edaspire collegenext ownhome daded momed white black
+ hispanic nativeamerican asianpacific otherrace multirac  APcourse applycounselor
+if schANid==109 &year!=2000;
+
+#delimit cr
+psgraph
+
+
+*#delimit;
+*psmatch2 WSAreceive male selfGPA edaspire collegenext ownhome daded momed white black
+ *hispanic nativeamerican asianpacific otherrace multirac  APcourse applycounselor
+*if schANid==109 &year!=2000, outcome (collegeattendfull) logit  ;
+*reg collegeattendfull WSAreceive male selfGPA edaspire collegenext ownhome daded momed white black
+ *hispanic nativeamerican asianpacific otherrace multirac  APcourse applycounselor
+*if schANid==109 &year!=2000 [freight=_weight] if _weight!=.
+
+*#delimit cr
+*psgraph
+
+
+
+
+
+
+
+
+

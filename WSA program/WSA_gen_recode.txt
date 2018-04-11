@@ -1,0 +1,111 @@
+gen edaspire=.
+replace edaspire=1 if S001>=4
+replace edaspire=0 if S001<4 & S001!=-999
+
+gen male=.
+replace male=1 if S004==2
+replace male=0 if S004==1
+
+gen collegenext=.
+replace collegenext=1 if S024==3
+replace collegenext=0 if S024<3 & S024 !=-999
+
+gen WSAapply=.
+replace WSAapply=1 if S030_A==1
+replace WSAapply=0 if S030_A>1
+
+gen WSAreceive=.
+replace WSAreceive=1 if S030_B==1
+replace WSAreceive=0 if S030_B>1
+
+gen selfGPA=.
+replace selfGPA=3.9 if S063==1
+replace selfGPA=3.5 if S063==2
+replace selfGPA=3 if S063==3
+replace selfGPA=2.5 if S063==4
+replace selfGPA=2 if S063==5
+replace selfGPA=1.5 if S063==6
+replace selfGPA=1 if S063==7
+replace selfGPA=.5 if S063==8
+
+gen ownhome=.
+replace ownhome=1 if S097==1
+replace ownhome=0 if S097>1
+
+gen daded=.
+replace daded=0 if S122_==17
+replace daded=1 if S122_<9 & S122_>0
+replace daded=2 if S122_==9
+replace daded=3 if S122_==10
+replace daded=4 if S122_>10 & S122_<17
+
+gen momed=.
+replace momed=0 if S130_==17
+replace momed=1 if S130_<9 & S130_>0
+replace momed=2 if S130_==9
+replace momed=3 if S130_==10
+replace momed=4 if S130_>10 & S130_<17
+
+gen hispanic=.
+replace hispanic=1 if S158A>1
+replace hispanic=0 if S158A==1
+
+gen racetotal=hispanic+S159A+S159B+S159C+S159E+S159F+S159G+S159H+S159I+S159J+S159K+S159L+S159M+S159O+S159P+S159Q+S159R+S159T 
+
+gen white=.
+replace white=1 if S159A==1 & racetotal==1
+replace white=0 if S159A==0
+
+gen black=.
+replace black=1 if S159B==1 & racetotal==1
+replace black=0 if S159B==0
+
+gen hispanic1=.
+replace hispanic1=1 if hispanic==1 & racetotal==1
+replace hispanic1=0 if hispanic==0
+
+gen nativeamerican=.
+replace nativeamerican=1 if S159C==1 & racetotal==1
+replace nativeamerican=0 if S159C==0
+
+gen asianpacific=.
+replace asianpacific=1 if S159E==1|S159F==1|S159G==1|S159H==1|S159I==1|S159J==1|S159K==1|S159L==1|S159M==1|S159O+S159P==1|S159Q==1|S159R==1&racetotal==1
+replace asianpacific=0 if asianpacific==. & racetotal>=0 & racetotal<2
+
+gen otherrace=.
+replace otherrace=1 if S159T==1 & racetotal==1
+replace otherrace=0 if S159T==0
+
+gen multirace=.
+replace multirace=1 if racetotal>1
+replace multirace=0 if racetotal==1 |racetotal==0
+
+gen hsgraduateontime=.
+replace hsgraduateontime=1 if F01A==1
+replace hsgraduateontime=0 if F01A==2
+replace hsgraduateontime=0 if F01A==3
+
+gen hsgraduateall=.
+replace hsgraduateall=1 if F01A==1
+replace hsgraduateall=1 if F01A==2
+replace hsgraduateall=0 if F01A==3
+
+
+gen collegeattendfull=.
+replace collegeattendfull=1 if F02==1
+replace collegeattendfull=0 if F02==2
+replace collegeattendfull=0 if F02==3
+
+gen collegeattendall=.
+replace collegeattendall=1 if F02==1
+replace collegeattendall=1 if F02==2
+replace collegeattendall=0 if F02==3
+
+gen gatesapp1=.
+replace gatesapp1=1 if gatesapp==1
+replace gatesapp1=0 if gatesapp==0
+
+gen gatesrec1=.
+replace gatesrec1=1 if gatesrec==1
+replace gatesrec1=0 if gatesrec==0
+
